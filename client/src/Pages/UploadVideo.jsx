@@ -7,6 +7,11 @@ const UploadVideo = () => {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file.size > 52428800) { // 50 MB in bytes
+      alert('File size exceeds the limit. Please choose a smaller file.');
+      e.target.value = ''; // Clear file selection
+    }
     setFile(e.target.files[0]);
   };
   const handleUpload = async () => {
@@ -40,7 +45,7 @@ const UploadVideo = () => {
 
       try {
         await axios
-          .post("http://20.244.105.139/upload", formData, {
+          .post("http://localhost:5000/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
