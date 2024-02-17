@@ -5,8 +5,10 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const WebSocket = require('ws');
 const fs = require("fs");
+const dotenv = require("dotenv");
 const { promisify } = require("util");
 const app = express();
+dotenv.config();
 const PORT = process.env.PORT || 5000;
 const wss = new WebSocket.Server({ port: 8080 }); 
 
@@ -16,7 +18,7 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(
-  "mongodb+srv://Admin:SKA9A1LD1ZRnpmZg@stack-overflow-clone.kbyvwka.mongodb.net/Molog"
+  process.env.MONGO_URL,
 );
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));

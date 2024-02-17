@@ -10,7 +10,7 @@ const DisplayFiles = () => {
     try {
       await axios
         .post(
-          "http://localhost:5000/publish",
+          "http://20.244.105.139/publish",
           { fileId },
           {
             headers: {
@@ -31,7 +31,7 @@ const DisplayFiles = () => {
     try {
       await axios
         .post(
-          "http://localhost:5000/unpublish",
+          "http://20.244.105.139/unpublish",
           { fileId },
           {
             headers: {
@@ -51,7 +51,7 @@ const DisplayFiles = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/files");
+        const res = await axios.get("http://20.244.105.139/files");
         setFiles(res.data);
       } catch (err) {
         console.error(err);

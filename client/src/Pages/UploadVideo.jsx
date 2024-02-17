@@ -10,6 +10,7 @@ const UploadVideo = () => {
     setFile(e.target.files[0]);
   };
   const handleUpload = async () => {
+    console.log("upload clicked");
     const formData = new FormData();
     formData.append("file", file);
     if (!file) {
@@ -39,7 +40,7 @@ const UploadVideo = () => {
 
       try {
         await axios
-          .post("http://localhost:5000/upload", formData, {
+          .post("http://20.244.105.139/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
