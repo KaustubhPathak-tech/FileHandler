@@ -45,7 +45,7 @@ const UploadVideo = () => {
 
       try {
         await axios
-          .post("http://20.244.105.139/upload", formData, {
+          .post("https://filehandler.centralindia.cloudapp.azure.com/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

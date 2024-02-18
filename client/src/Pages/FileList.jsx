@@ -13,7 +13,7 @@ const FileList = () => {
       const message = JSON.parse(event.data);
       if (message.event === "filePublished"||"fileUnPublished") {
         console.log("Files updated!");
-        const response = await axios.get("http://20.244.105.139/files");
+        const response = await axios.get("https://filehandler.centralindia.cloudapp.azure.com/files");
         setFiles(response.data);
       }
     };
@@ -25,7 +25,7 @@ const FileList = () => {
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const response = await axios.get("http://20.244.105.139/files");
+      const response = await axios.get("https://filehandler.centralindia.cloudapp.azure.com/files");
       setFiles(response.data);
     };
 

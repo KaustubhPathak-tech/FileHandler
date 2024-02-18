@@ -10,7 +10,7 @@ const DisplayFiles = () => {
     try {
       await axios
         .post(
-          "http://20.244.105.139/publish",
+          "https://filehandler.centralindia.cloudapp.azure.com/publish",
           { fileId },
           {
             headers: {
@@ -31,7 +31,7 @@ const DisplayFiles = () => {
     try {
       await axios
         .post(
-          "http://20.244.105.139/unpublish",
+          "https://filehandler.centralindia.cloudapp.azure.com/unpublish",
           { fileId },
           {
             headers: {
@@ -51,7 +51,7 @@ const DisplayFiles = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://20.244.105.139/files");
+        const res = await axios.get("https://filehandler.centralindia.cloudapp.azure.com/files");
         setFiles(res.data);
       } catch (err) {
         console.error(err);
