@@ -4,7 +4,7 @@ import axios from "axios";
 const FileList = () => {
   const [files, setFiles] = useState([]);
   useEffect(() => {
-    const socket = new WebSocket("ws://20.244.105.139:8080");
+    const socket = new WebSocket("ws://filehandler.centralindia.cloudapp.azure.com:8080");
     socket.onopen = () => {
       console.log("WebSocket connection established!");
     };
