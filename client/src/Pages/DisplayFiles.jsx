@@ -60,7 +60,6 @@ const DisplayFiles = () => {
 
     fetchData();
   }, []);
-  console.log(files);
 
   return (
     <div>

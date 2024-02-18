@@ -3,23 +3,21 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const WebSocket = require('ws');
+const WebSocket = require("ws");
 const fs = require("fs");
 const dotenv = require("dotenv");
 const { promisify } = require("util");
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
-const wss = new WebSocket.Server({ port: 8080 }); 
+const wss = new WebSocket.Server({ port: 8080 });
 
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(
-  process.env.MONGO_URL,
-);
+mongoose.connect(process.env.MONGO_URL);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
@@ -49,7 +47,7 @@ const upload = multer({ storage });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    if(!req.file){
+    if (!req.file) {
       return res.status(400).json("Please upload a file!");
     }
     const { filename, path, originalname, mimetype } = req.file;
@@ -78,68 +76,65 @@ app.get("/files", async (req, res) => {
 });
 
 app.post("/publish", async (req, res) => {
-  const fileId = req.body.fileId; 
+  const fileId = req.body.fileId;
   try {
     const file = await File.findById(fileId);
     if (!file) {
-      return res.status(404).json({ error: 'File not found' });
+      return res.status(404).json({ error: "File not found" });
     }
 
     file.isPublished = true;
     await file.save();
 
-    
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ event: 'filePublished' }));
+        client.send(JSON.stringify({ event: "filePublished" }));
       }
     });
-    
-    return res.status(200).json({ message: 'File published successfully' });
+
+    return res.status(200).json({ message: "File published successfully" });
   } catch (error) {
-    console.error('Error publishing file:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error("Error publishing file:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 app.post("/unpublish", async (req, res) => {
-  const fileId = req.body.fileId; 
+  const fileId = req.body.fileId;
   try {
     const file = await File.findById(fileId);
     if (!file) {
-      return res.status(404).json({ error: 'File not found' });
+      return res.status(404).json({ error: "File not found" });
     }
     file.isPublished = false;
     await file.save();
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ event2: 'fileUnPublished' }));
+        client.send(JSON.stringify({ event2: "fileUnPublished" }));
       }
     });
-    return res.status(200).json({ message: 'File Unpublished successfully' });
+    return res.status(200).json({ message: "File Unpublished successfully" });
   } catch (error) {
-    console.error('Error publishing file:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error("Error publishing file:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
-const cron = require('node-cron');
+const cron = require("node-cron");
 
-cron.schedule('*/15 * * * *', () => {
+cron.schedule("*/15 * * * *", () => {
   console.log("UPDATING");
   wss.clients.forEach((client) => {
-    
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ event2: 'fileUnPublished' }));
+      client.send(JSON.stringify({ event2: "fileUnPublished" }));
     }
   });
 });
 
+wss.on("connection", (ws) => {
+  console.log("WebSocket connection established!");
 
-wss.on('connection', (ws) => {
-  console.log('WebSocket connection established!');
-  
-  ws.on('close', () => {
-    console.log('WebSocket connection closed!');
+  ws.on("close", () => {
+    console.log("WebSocket connection closed!");
   });
 });
 

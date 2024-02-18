@@ -45,7 +45,7 @@ const UploadVideo = () => {
 
       try {
         await axios
-          .post("http://localhost:5000/upload", formData, {
+          .post("http://20.244.105.139/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -56,6 +56,7 @@ const UploadVideo = () => {
           });
         setFile(null);
       } catch (error) {
+        console.log(error);
         alert("Error uploading file");
       }
     }

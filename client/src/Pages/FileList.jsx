@@ -4,8 +4,7 @@ import axios from "axios";
 const FileList = () => {
   const [files, setFiles] = useState([]);
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
-
+    const socket = new WebSocket("ws://20.244.105.139:8080");
     socket.onopen = () => {
       console.log("WebSocket connection established!");
     };
@@ -14,7 +13,7 @@ const FileList = () => {
       const message = JSON.parse(event.data);
       if (message.event === "filePublished"||"fileUnPublished") {
         console.log("Files updated!");
-        const response = await axios.get("http://localhost:5000/files");
+        const response = await axios.get("http://20.244.105.139/files");
         setFiles(response.data);
       }
     };
@@ -26,7 +25,7 @@ const FileList = () => {
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const response = await axios.get("http://localhost:5000/files");
+      const response = await axios.get("http://20.244.105.139/files");
       setFiles(response.data);
     };
 
@@ -38,7 +37,7 @@ const FileList = () => {
       <h1 className="font-serif text-xl text-center mb-5 font-semibold bg-gradient-to-r from-red-800 to-blue-600 bg-clip-text text-transparent">Published File List</h1>
       <ul>
         {files.map((file) => (
-          <li key={file._id}>{file.isPublished && <>{file.filename}</>}</li>
+          <li key={file._id}>{file.isPublished && <>{file.originalname}</>}</li>
         ))}
       </ul>
     </div>
